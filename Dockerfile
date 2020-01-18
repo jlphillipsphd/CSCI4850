@@ -7,6 +7,8 @@ USER root
 # Additional tools
 RUN apt-get update && \
     apt-get install -y \
+    autoconf \
+    libtool \
     vim \
     less \
     texlive-science \
