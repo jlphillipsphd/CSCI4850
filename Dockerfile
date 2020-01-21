@@ -13,7 +13,8 @@ RUN apt-get update && \
     less \
     texlive-science \
     ssh \
-    rsync
+    rsync \
+    graphviz
 
 # CSCI 4350 & 4850
 USER $NB_UID
@@ -24,6 +25,7 @@ RUN conda install --quiet --yes \
     pytorch \
     torchvision \
     bash_kernel \
+    pydot \
     && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
