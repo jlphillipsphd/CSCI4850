@@ -14,7 +14,10 @@ RUN apt-get update && \
     texlive-science \
     ssh \
     rsync \
-    graphviz
+    zip \
+    graphviz \
+    xvfb \
+    python-opengl
 
 # CSCI 4350 & 4850
 USER $NB_UID
@@ -26,8 +29,11 @@ RUN conda install --quiet --yes \
     torchvision \
     bash_kernel \
     pydot \
+    xvfbwrapper \
     && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+
+RUN pip install gym
 
