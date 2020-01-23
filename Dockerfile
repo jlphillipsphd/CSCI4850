@@ -15,6 +15,7 @@ RUN apt-get update && \
     ssh \
     rsync \
     zip \
+    tmux \
     graphviz \
     xvfb \
     python-opengl
