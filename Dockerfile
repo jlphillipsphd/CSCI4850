@@ -36,5 +36,11 @@ RUN conda install --quiet --yes \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-RUN pip install gym
+RUN pip install \
+    gym \
+    gensim \
+    nltk \
+    stanfordcorenlp
+
+RUN python -m nltk.downloader all
 
