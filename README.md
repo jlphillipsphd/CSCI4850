@@ -20,3 +20,8 @@ docker run -it --rm -p 8888:8888 --user root -e JUPYTER_ENABLE_LAB=yes -e GRANT_
 
 You will need to modify `/home/jphillips` to where your files are in order to make this work...
 
+If you want to pull from Docker Hub instead:
+```
+docker pull jlphillips/csci4850
+docker run -it --rm -p 8888:8888 --user root -e JUPYTER_ENABLE_LAB=yes -e GRANT_SUDO=yes -v /home/jphillips:/home/jovyan/work jlphillips/csci4850
+```
