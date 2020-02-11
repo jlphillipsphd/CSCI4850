@@ -18,7 +18,8 @@ RUN apt-get update && \
     tmux \
     graphviz \
     xvfb \
-    python-opengl
+    python-opengl \
+    gdb
 
 # CSCI 4350 & 4850
 USER $NB_UID
