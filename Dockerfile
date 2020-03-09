@@ -1,4 +1,4 @@
-FROM jupyter/datascience-notebook:7a0c7325e470
+FROM jupyter/datascience-notebook
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
@@ -24,24 +24,20 @@ RUN apt-get update && \
 # CSCI 4350 & 4850
 USER $NB_UID
 
-RUN conda install --quiet --yes \
+RUN pip install --quiet \
     keras \
     tensorflow \
-    pytorch \
+    torch \
     torchvision \
     bash_kernel \
     pydot \
     xvfbwrapper \
-    && \
-    conda clean --all -f -y && \
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
-
-RUN pip install \
     gym \
     gensim \
     nltk \
-    stanfordcorenlp
+    stanfordcorenlp && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 RUN python -m nltk.downloader all
 
