@@ -1,5 +1,5 @@
 # CSCI4850
-Docker container for CSCI 4850/5850 - Neural Networks
+Docker container for CSCI 4850/5850 - Neural Networks (ver. 2020-06-05)
 
 This container is built on top of jupyter/datascience-notebook provided by jupyter/docker-stacks. It provides a JupyterLab environment with several essential (and non-essential) tools used in CSCI4850/5850 - Neural Networks.
 
