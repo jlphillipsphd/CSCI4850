@@ -8,36 +8,43 @@ USER root
 RUN apt-get update && \
     apt-get install -y \
     autoconf \
-    libtool \
-    vim \
-    less \
-    texlive-science \
-    ssh \
-    rsync \
-    zip \
-    tmux \
+    g++ \
+    gcc \
+    gdb \
     graphviz \
-    xvfb \
+    less \
+    libtool \
+    make \
     python-opengl \
-    gdb
+    rsync \
+    ssh \
+    texlive-science \
+    tmux \
+    vim \
+    xvfb \
+    zip \
+    && apt-get clean
 
 # CSCI 4350 & 4850
 USER $NB_UID
 
-RUN pip install --quiet \
+RUN pip install --quiet --no-cache-dir --use-feature=2020-resolver \
+    bash_kernel \
+    gensim \
+    gym \
     keras \
-    tensorflow \
+    nltk \
+    pydot \
+    'tensorflow==2.2.0' \
     torch \
     torchvision \
-    bash_kernel \
-    pydot \
     xvfbwrapper \
-    gym \
-    gensim \
-    nltk \
     stanfordcorenlp && \
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
-RUN python -m nltk.downloader all
+# Leave as root at the end for K8S to
+# be able to provide sudo later on...
+USER root
+RUN python -m nltk.downloader -d /usr/local/share/nltk_data all
 
