@@ -28,14 +28,15 @@ RUN apt-get update && \
 # CSCI 4350 & 4850
 USER $NB_UID
 
-RUN pip install --quiet --no-cache-dir --use-feature=2020-resolver \
+RUN pip install --quiet --no-cache-dir \
     bash_kernel \
     gensim \
     gym \
     keras \
     nltk \
+    plotly \
     pydot \
-    'tensorflow==2.2.0' \
+    'tensorflow==2.3.0' \
     torch \
     torchvision \
     xvfbwrapper \
@@ -47,4 +48,5 @@ RUN pip install --quiet --no-cache-dir --use-feature=2020-resolver \
 # be able to provide sudo later on...
 USER root
 RUN python -m nltk.downloader -d /usr/local/share/nltk_data all
+RUN jupyter labextension install jupyterlab-plotly
 
