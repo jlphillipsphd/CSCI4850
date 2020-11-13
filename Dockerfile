@@ -43,7 +43,7 @@ ADD lambda.gpg /root/lambda.gpg
 RUN apt-get update && \
 	apt-get install --yes gnupg && \
 	apt-key add /root/lambda.gpg && \
-	rm lambda.gpg && \
+	rm /root/lambda.gpg && \
 	echo "deb http://archive.lambdalabs.com/ubuntu focal main" > /etc/apt/sources.list.d/lambda.list && \
 	echo "Package: *" > /etc/apt/preferences.d/lambda && \
 	echo "Pin: origin archive.lambdalabs.com" >> /etc/apt/preferences.d/lambda && \
