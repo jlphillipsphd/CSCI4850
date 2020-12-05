@@ -33,12 +33,26 @@ RUN pip3 install --quiet --no-cache-dir \
     bash_kernel \
     gensim \
     gym \
+    nbclient \
+    plotly==4.12.0 \
     pydot \
     stanfordcorenlp && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
-RUN jupyter labextension install jupyterlab-plotly
+RUN jupyter labextension install jupyterlab-plotly@^4.12.0 --no-build && \
+    jupyter lab build -y && \
+    jupyter lab clean -y && \
+    npm cache clean --force && \
+    rm -rf "/home/${NB_USER}/.cache/yarn" && \
+    rm -rf "/home/${NB_USER}/.node-gyp" && \
+    python -m bash_kernel.install --sys-prefix
+
+# Final permissions cleanup
+RUN chown -R $NB_USER "/home/${NB_USER}"
+USER $NB_UID
+RUN fix-permissions "/home/${NB_USER}"
+USER root
 # Leave as root at the end for K8S to
 # be able to provide sudo later on...
