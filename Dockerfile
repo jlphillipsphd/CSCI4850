@@ -28,7 +28,7 @@ RUN apt-get update && \
 # CSCI 4350 & 4850
 USER $NB_UID
 
-RUN pip install --quiet --no-cache-dir --use-feature=2020-resolver \
+RUN pip install --quiet --no-cache-dir \
     bash_kernel \
     gensim \
     gym \
