@@ -49,4 +49,5 @@ RUN pip install --quiet --no-cache-dir \
 USER root
 RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
 RUN jupyter labextension install jupyterlab-plotly
+RUN python -m bash_kernel.install --sys-prefix
 

@@ -36,6 +36,6 @@ docker run -it --rm -p 8888:8888 --user root -e JUPYTER_ENABLE_LAB=yes -e GRANT_
 
 You may instead build the image for use with NVIDIA GPUs via Lambda Stack as well (**significantly larger image** ~ 20GB) with the following:
 ```
-docker build -t csci4850 -f CSCI4830/Dockerfile.lambda CSCI4850
+docker build -t csci4850 -f CSCI4850/Dockerfile.lambda CSCI4850
 ```
 
