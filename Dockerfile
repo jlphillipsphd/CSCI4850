@@ -8,6 +8,7 @@ USER root
 RUN apt-get update && \
     apt-get install -y \
     autoconf \
+    emacs-nox \
     g++ \
     gcc \
     gdb \
@@ -25,8 +26,8 @@ RUN apt-get update && \
     zip \
     && apt-get clean
 
-# CSCI 4350 & 4850
 USER $NB_UID
+RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init
 
 RUN pip install --quiet --no-cache-dir \
     bash_kernel \
@@ -36,13 +37,14 @@ RUN pip install --quiet --no-cache-dir \
     nltk \
     plotly \
     pydot \
-    'tensorflow==2.3.1' \
+    'tensorflow==2.4.1' \
     torch \
     torchvision \
     xvfbwrapper \
     stanfordcorenlp && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
 
 # Leave as root at the end for K8S to
 # be able to provide sudo later on...
