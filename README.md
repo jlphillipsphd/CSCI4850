@@ -14,8 +14,10 @@ docker run -it --rm -p 8888:8888 --user root -e JUPYTER_ENABLE_LAB=yes -e GRANT_
 There is an alternative image for use with NVIDIA GPUs via Lambda Stack as well (**significantly larger image** ~ 20GB) with the following:
 ```
 docker pull jlphillips/csci4850:lambda
-docker run -it --rm -p 8888:8888 --user root -e JUPYTER_ENABLE_LAB=yes -e GRANT_SUDO=yes -v /home/jphillips:/home/jovyan/work jlphillips/csci4850:lambda
+docker run -it --rm -p 8888:8888 --user root --gpus all -e JUPYTER_ENABLE_LAB=yes -e GRANT_SUDO=yes -v /home/jphillips:/home/jovyan/work jlphillips/csci4850:lambda
 ```
+
+You will also need to make sure your Docker installation is set up to use the Nvidia container toolkit, as described [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html), or just `sudo apt-get install nvidia-container-toolkit` if you are using the Lambda Stack on your host.
 
 However, if you want to build the image yourself, then do the following...
 
