@@ -10,7 +10,6 @@ RUN apt-get update && \
     autoconf \
     emacs-nox \
     enscript \
-    expect \
     g++ \
     gcc \
     gdb \
@@ -32,7 +31,8 @@ RUN apt-get update && \
 USER $NB_UID
 RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init
 
-RUN pip install --quiet --no-cache-dir \
+RUN conda install --quiet --yes expect && \
+    pip install --quiet --no-cache-dir \
     bash_kernel \
     gensim \
     gym \
