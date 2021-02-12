@@ -9,6 +9,8 @@ RUN apt-get update && \
     apt-get install -y \
     autoconf \
     emacs-nox \
+    enscript \
+    expect \
     g++ \
     gcc \
     gdb \
@@ -16,6 +18,7 @@ RUN apt-get update && \
     less \
     libtool \
     make \
+    poppler-utils \
     python-opengl \
     rsync \
     ssh \
