@@ -24,6 +24,7 @@ RUN apt-get update && \
     texlive-science \
     tmux \
     vim \
+    wkhtmltopdf \
     xvfb \
     zip \
     && apt-get clean
@@ -31,7 +32,7 @@ RUN apt-get update && \
 USER $NB_UID
 RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init
 
-RUN conda install --quiet --yes expect && \
+RUN mamba install --quiet --yes expect && \
     pip install --quiet --no-cache-dir \
     bash_kernel \
     gensim \
