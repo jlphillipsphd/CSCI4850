@@ -3,16 +3,16 @@ FROM jlphillips/csci4850:lambda
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV COMPBIO_BUILD_DATE 2020-02-20
+ENV COMPBIO_BUILD_DATE 2021-05-05
 
 # Install as user
 USER $NB_UID
 
 # Qiime2
 RUN wget https://data.qiime2.org/distro/core/qiime2-2020.11-py36-linux-conda.yml && \
-    conda env create -n qiime2-2020.11 --file qiime2-2020.11-py36-linux-conda.yml  && \
+    mamba env create -n qiime2-2020.11 --file qiime2-2020.11-py36-linux-conda.yml  && \
     rm qiime2-2020.11-py36-linux-conda.yml
-SHELL ["conda", "run", "-n", "qiime2-2020.11", "/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["mamba", "run", "-n", "qiime2-2020.11", "/bin/bash", "-o", "pipefail", "-c"]
 RUN python -m ipykernel install --name qiime2-2020.11 --prefix /opt/conda --display-name "Python 3 (Qiime2)"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -24,7 +24,7 @@ RUN R -e "install.packages('BiocManager',dependencies=TRUE, repos='http://cran.r
 RUN R -e "BiocManager::install('phyloseq')"
 
 # Cleanup - not very thorough... needs revision
-RUN conda clean --all -f -y 
+RUN mamba clean --all -f -y 
 
 # For grant sudo
 USER root
