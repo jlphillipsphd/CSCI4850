@@ -3,7 +3,7 @@ FROM jlphillips/csci4850:latest
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV LAMBDA_STACK_BUILD_DATE 2020-12-09
+ENV LAMBDA_STACK_BUILD_DATE 2021-05-12
 
 # WORKDIR /root/
 
