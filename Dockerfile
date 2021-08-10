@@ -1,6 +1,7 @@
-FROM jupyter/datascience-notebook
+FROM jupyter/datascience-notebook:ubuntu-20.04
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
+LABEL release-date="2020-08-10"
 
 USER root
 
@@ -30,30 +31,36 @@ RUN apt-get update && \
     && apt-get clean
 
 USER $NB_UID
-RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init
 
-RUN mamba install --quiet --yes expect && \
-    pip install --quiet --no-cache-dir \
+RUN mamba install --quiet --yes \
     bash_kernel \
+    expect \
     gensim \
     gym \
-    keras \
     nltk \
     plotly \
     pydot \
-    'tensorflow==2.4.1' \
-    torch \
+    pytorch \
+    stanfordcorenlp \
+    tensorflow \
     torchvision \
-    xvfbwrapper \
-    stanfordcorenlp && \
+    xvfbwrapper && \
+    mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
+# Just keeping this around if needed later...
+#    pip install --quiet --no-cache-dir \
+
+# This will be ignored on k8s, docker-compose, etc. since the
+# volume mounted at /home/jovyan will not have them, but
+# it's useful for stand-alone containers.
+RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init
 
 # Leave as root at the end for K8S to
 # be able to provide sudo later on...
 USER root
 RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
-RUN jupyter labextension install jupyterlab-plotly
-RUN python -m bash_kernel.install --sys-prefix
+# RUN jupyter labextension install jupyterlab-plotly
+# RUN python -m bash_kernel.install --sys-prefix
 
