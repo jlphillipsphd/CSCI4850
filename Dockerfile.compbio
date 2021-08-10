@@ -3,7 +3,7 @@ FROM jlphillips/csci4850:lambda
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV COMPBIO_BUILD_DATE 2021-05-05
+ENV COMPBIO_BUILD_DATE 2021-05-12
 
 # Install as user
 USER $NB_UID
