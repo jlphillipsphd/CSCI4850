@@ -1,11 +1,11 @@
-FROM jlphillips/csci4850
+FROM jlphillips/csci4850:2021-08-10
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 USER $NB_UID
 
 RUN mamba install --quiet --yes \
-    dask==2021.4.0 && \
+    dask-gateway && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
