@@ -1,7 +1,7 @@
 FROM jupyter/datascience-notebook:ubuntu-20.04
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2020-08-10"
+LABEL release-date="2020-08-15"
 
 USER root
 
@@ -34,6 +34,9 @@ USER $NB_UID
 
 RUN mamba install --quiet --yes \
     bash_kernel \
+    dask-gateway \
+    dask-jobqueue \
+    dask-mpi \
     expect \
     gensim \
     gym \
