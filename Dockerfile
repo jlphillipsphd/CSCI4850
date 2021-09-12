@@ -43,17 +43,25 @@ RUN mamba install --quiet --yes \
     nltk \
     plotly \
     pydot \
-    pytorch \
     stanfordcorenlp \
     tensorflow \
-    torchvision \
     xvfbwrapper && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# Just keeping this around if needed later...
-#    pip install --quiet --no-cache-dir \
+# RUN mamba install --quiet --yes \
+#     pytorch \
+#     torchvision==0.9.1=py39h93e5132_1_cpu && \
+#     mamba clean --all -f -y && \
+#     fix-permissions "${CONDA_DIR}" && \
+#     fix-permissions "/home/${NB_USER}"
+
+RUN pip install --quiet --no-cache-dir \
+    torch==1.8.2+cu111 \
+    torchvision==0.9.2+cu111 \
+    torchaudio==0.8.2 \
+    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 
 # This will be ignored on k8s, docker-compose, etc. since the
 # volume mounted at /home/jovyan will not have them, but
