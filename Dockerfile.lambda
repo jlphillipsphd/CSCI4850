@@ -1,9 +1,9 @@
-FROM jlphillips/csci4850:latest
+FROM jlphillips/csci4850:2021-09-12
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV LAMBDA_STACK_BUILD_DATE 2021-05-12
+ENV LAMBDA_STACK_BUILD_DATE 2021-09-12
 
 # WORKDIR /root/
 
