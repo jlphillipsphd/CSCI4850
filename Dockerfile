@@ -38,9 +38,9 @@ RUN mamba install --quiet --yes \
     dask-jobqueue \
     dask-mpi \
     expect \
-    gensim \
     gym \
     nltk \
+    numpy==1.19.5 \
     plotly \
     pydot \
     stanfordcorenlp \
@@ -50,18 +50,19 @@ RUN mamba install --quiet --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# RUN mamba install --quiet --yes \
-#     pytorch \
-#     torchvision==0.9.1=py39h93e5132_1_cpu && \
-#     mamba clean --all -f -y && \
-#     fix-permissions "${CONDA_DIR}" && \
-#     fix-permissions "/home/${NB_USER}"
-
+# PyTorch - Cuda 11.1 support
+#    torch==1.8.2+cu111 \
+#    torchvision==0.9.2+cu111 \
+#    torchaudio==0.8.2 \
 RUN pip install --quiet --no-cache-dir \
-    torch==1.8.2+cu111 \
-    torchvision==0.9.2+cu111 \
+    torch==1.8.2+cpu \
+    torchvision==0.9.2+cpu \
     torchaudio==0.8.2 \
-    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
+    pip install --quiet --no-cache-dir \
+    gensim && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 # This will be ignored on k8s, docker-compose, etc. since the
 # volume mounted at /home/jovyan will not have them, but
