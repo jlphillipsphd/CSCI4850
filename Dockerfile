@@ -76,3 +76,15 @@ RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
 # RUN jupyter labextension install jupyterlab-plotly
 # RUN python -m bash_kernel.install --sys-prefix
 
+# Custom hook to setup home directory
+RUN mkdir /usr/local/bin/before-notebook.d
+COPY config-home.sh /usr/local/bin/before-notebook.d/.
+
+# Patch start.sh to link instead of copy.
+COPY start.sh.patch /usr/local/src/.
+RUN apt-get update && \
+    apt-get install -y \
+    patch && \
+    patch /usr/local/bin/start.sh /usr/local/src/start.sh.patch \
+    && apt-get clean
+

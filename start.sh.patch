@@ -1,0 +1,14 @@
+--- start.sh.orig	2021-09-13 20:41:29.215959670 -0500
++++ start.sh	2021-09-13 20:45:01.758212601 -0500
+@@ -53,9 +53,8 @@
+         # changing username, make sure homedir exists
+         # (it could be mounted, and we shouldn't create it if it already exists)
+         if [[ ! -e "/home/${NB_USER}" ]]; then
+-            echo "Copying home dir to /home/${NB_USER}"
+-            mkdir "/home/${NB_USER}"
+-            cp -R /home/jovyan "/home/${NB_USER}" || ln -s /home/jovyan "/home/${NB_USER}"
++            echo "Linking home dir to /home/${NB_USER}"
++            ln -s /home/jovyan "/home/${NB_USER}"
+         fi
+         # if workdir is in /home/jovyan, cd to /home/${NB_USER}
+         if [[ "${PWD}/" == "/home/jovyan/"* ]]; then
