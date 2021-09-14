@@ -1,0 +1,21 @@
+*** __init__.py.orig	2021-08-30 19:29:39.324827806 +0000
+--- __init__.py	2021-08-30 19:30:22.586352307 +0000
+*************** import traceback
+*** 37,44 ****
+  # go/tf-wildcard-import
+  # pylint: disable=wildcard-import,g-bad-import-order,g-import-not-at-top
+  
+- from tensorflow.python.eager import context
+  from tensorflow.python import pywrap_tensorflow as _pywrap_tensorflow
+  
+  # pylint: enable=wildcard-import
+  
+--- 37,44 ----
+  # go/tf-wildcard-import
+  # pylint: disable=wildcard-import,g-bad-import-order,g-import-not-at-top
+  
+  from tensorflow.python import pywrap_tensorflow as _pywrap_tensorflow
++ from tensorflow.python.eager import context
+  
+  # pylint: enable=wildcard-import
+  
