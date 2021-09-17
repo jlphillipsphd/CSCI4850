@@ -81,10 +81,10 @@ RUN mkdir /usr/local/bin/before-notebook.d
 COPY config-home.sh /usr/local/bin/before-notebook.d/.
 
 # Patch start.sh to link instead of copy.
-COPY start.sh.patch /usr/local/src/.
-RUN apt-get update && \
-    apt-get install -y \
-    patch && \
-    patch /usr/local/bin/start.sh /usr/local/src/start.sh.patch \
-    && apt-get clean
+# COPY start.sh.patch /usr/local/src/.
+# RUN apt-get update && \
+#     apt-get install -y \
+#     patch && \
+#     patch /usr/local/bin/start.sh /usr/local/src/start.sh.patch \
+#     && apt-get clean
 
