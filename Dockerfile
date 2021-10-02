@@ -23,6 +23,7 @@ RUN apt-get update && \
     rsync \
     ssh \
     texlive-science \
+    time \
     tmux \
     vim \
     wkhtmltopdf \
