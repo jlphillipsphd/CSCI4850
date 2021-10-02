@@ -1,7 +1,7 @@
 FROM jupyter/datascience-notebook:ubuntu-20.04
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2020-09-17"
+LABEL release-date="2020-10-02"
 
 USER root
 
