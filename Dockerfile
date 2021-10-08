@@ -1,7 +1,7 @@
 FROM jupyter/datascience-notebook:ubuntu-20.04
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2020-10-02"
+LABEL release-date="2020-10-08"
 
 USER root
 
@@ -33,7 +33,13 @@ RUN apt-get update && \
 
 USER $NB_UID
 
-RUN mamba install --quiet --yes \
+RUN mamba install --yes \
+    -c nvidia \
+    -c defaults \
+    -c conda-forge \
+    pytorch-gpu \
+    numpy \
+    cudatoolkit \
     bash_kernel \
     dask-gateway \
     dask-jobqueue \
@@ -41,12 +47,12 @@ RUN mamba install --quiet --yes \
     expect \
     gym \
     nltk \
-    numpy==1.19.5 \
     plotly \
     pydot \
     stanfordcorenlp \
-    tensorflow \
     xvfbwrapper && \
+    pip install --quiet --no-cache-dir \
+    tensorflow && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -55,15 +61,16 @@ RUN mamba install --quiet --yes \
 #    torch==1.8.2+cu111 \
 #    torchvision==0.9.2+cu111 \
 #    torchaudio==0.8.2 \
-RUN pip install --quiet --no-cache-dir \
-    torch==1.8.2+cpu \
-    torchvision==0.9.2+cpu \
-    torchaudio==0.8.2 \
-    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
-    pip install --quiet --no-cache-dir \
-    gensim && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+# This sort-of works...
+# RUN pip install --quiet --no-cache-dir \
+#     torch==1.8.2+cpu \
+#     torchvision==0.9.2+cpu \
+#     torchaudio==0.8.2 \
+#     -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
+#     pip install --quiet --no-cache-dir \
+#     gensim && \
+#     fix-permissions "${CONDA_DIR}" && \
+#     fix-permissions "/home/${NB_USER}"
 
 # This will be ignored on k8s, docker-compose, etc. since the
 # volume mounted at /home/jovyan will not have them, but
@@ -78,8 +85,8 @@ RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
 # RUN python -m bash_kernel.install --sys-prefix
 
 # Custom hook to setup home directory
-RUN mkdir /usr/local/bin/before-notebook.d
-COPY config-home.sh /usr/local/bin/before-notebook.d/.
+# RUN mkdir /usr/local/bin/before-notebook.d
+# COPY config-home.sh /usr/local/bin/before-notebook.d/.
 
 # Patch start.sh to link instead of copy.
 # COPY start.sh.patch /usr/local/src/.
