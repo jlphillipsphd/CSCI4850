@@ -1,11 +1,11 @@
-FROM jlphillips/csci4850:2021-09-12
+FROM jlphillips/csci4850:2021-10-09
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV LAMBDA_STACK_BUILD_DATE 2021-09-12
+ENV LAMBDA_STACK_BUILD_DATE 2021-10-09
 
-# WORKDIR /root/
+USER root
 
 # Add libcuda dummy dependency
 ADD control .
@@ -45,7 +45,10 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ENV NVIDIA_REQUIRE_CUDA "cuda>=10.2"
 
-# For grant sudo
-USER root
 RUN /usr/bin/python -m ipykernel install --name lambda-stack --display-name "Python 3 (λ)"
 
+# Local patch needed for current Lambda-TF (2.5.0)
+COPY init_py.patch /usr/local/src/.
+RUN patch /usr/lib/python3/dist-packages/tensorflow/python/__init__.py /usr/local/src/init_py.patch
+
+USER $NB_UID

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-echo "Running hook to prepare home directory: ${HOME}"
+echo "Running hook to prepare home directory: /home/${NB_USER}"
+export HOME=/home/${NB_USER}
 
 if [ ! -f ${HOME}/.profile ]; then
    echo "Added .profile"
