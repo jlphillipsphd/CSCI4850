@@ -1,0 +1,54 @@
+FROM temp
+
+LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
+
+USER root
+
+# Additional tools
+RUN apt-get update && \
+    apt-get install -y \
+    default-jre \
+    dbus-x11 \
+    xfce4 \
+    xfce4-panel \
+    xfce4-session \
+    xfce4-settings \
+    xorg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install:
+# TurboVNC (for Desktop)
+# VSCode (for IDE)
+# NLTK Data (for nltk)
+RUN wget 'https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_amd64.deb/download' -O turbovnc_2.2.5_amd64.deb && \
+    apt-get install -y -q ./turbovnc_2.2.5_amd64.deb && \
+    apt-get remove -y -q light-locker && \
+    rm ./turbovnc_2.2.5_amd64.deb && \
+    ln -s /opt/TurboVNC/bin/* /usr/local/bin/ && \
+    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=3.10.2 && \
+    rm -rf "${HOME}/.cache" && \
+    wget https://iweb.dl.sourceforge.net/project/circuit/2.7.x/2.7.1/logisim-generic-2.7.1.jar && \
+    mkdir /opt/logisim && \
+    mv logisim-generic-2.7.1.jar /opt/logisim/.
+
+# Install Logisim
+COPY logisim* /opt/logisim/
+RUN ln -s /opt/logisim/logisim /usr/local/bin/. && \
+    ln -s /opt/logisim/logisim.desktop /usr/share/applications/. && \
+    ln -s /opt/logisim/mimeapps.list /usr/share/applications/.
+
+# Switch back to user for final env
+# configuration...
+USER $NB_UID
+
+# JS-Proxy package(s) configuration:
+# jupyter-desktop-server (for Desktop)
+# jupyter_codeserver_proxy (for IDE)
+# ENV CODE_WORKINGDIR="${HOME}"
+COPY ./dist/*.whl /${HOME}/
+RUN pip install --quiet --no-cache-dir *.whl && \
+    rm *.whl && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+

@@ -1,9 +1,9 @@
-FROM jlphillips/csci4850:lambda-2021-09-12
+FROM jlphillips/csci4850:2021-10-15-gpu
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
 # Build date: triggers cache rebuild
-ENV COMPBIO_BUILD_DATE 2021-09-12
+ENV COMPBIO_BUILD_DATE 2021-10-15
 
 # Install as user
 USER $NB_UID
@@ -24,28 +24,21 @@ RUN R -e "install.packages('BiocManager',dependencies=TRUE, repos='http://cran.r
 RUN R -e "BiocManager::install('phyloseq')"
 
 # Replace PyTorch (CPU with Cuda 11.1)
-RUN pip uninstall -y \
-    torch \
-    torchvision \
-    torchaudio && \
-    pip install --quiet --no-cache-dir \
-    torch==1.8.2+cu111 \
-    torchvision==0.9.2+cu111 \
-    torchaudio==0.8.2 \
-    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+# RUN pip uninstall -y \
+#     torch \
+#     torchvision \
+#     torchaudio && \
+#     pip install --quiet --no-cache-dir \
+#     torch==1.8.2+cu111 \
+#     torchvision==0.9.2+cu111 \
+#     torchaudio==0.8.2 \
+#     -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
+#     fix-permissions "${CONDA_DIR}" && \
+#     fix-permissions "/home/${NB_USER}"
 
 
 # Cleanup - not very thorough... needs revision
-RUN mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
-
-# For grant sudo
-USER root
-RUN rm -rf .npm .cache/yarn
-
-# Local patch needed for current Lambda-TF (2.5.0)
-COPY init_py.patch /usr/local/src/.
-RUN patch /usr/lib/python3/dist-packages/tensorflow/python/__init__.py /usr/local/src/init_py.patch
+# RUN mamba clean --all -f -y && \
+RUN fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}" && \
+    rm -rf .npm .cache/yarn
