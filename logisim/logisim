@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec java -jar /opt/logisim/logisim-generic-2.7.1.jar ${@}

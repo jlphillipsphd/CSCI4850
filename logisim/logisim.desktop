@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Logisim
+GenericName=Digital Logic Simulator
+Comment=Simulate digital circuits
+TryExec=logisim
+Exec=logisim %F
+Terminal=false
+Type=Application
+Keywords=Circuit;editor;
+Icon=/opt/logisim/logisim-icon.png
+MimeType=application/xml
+
+
