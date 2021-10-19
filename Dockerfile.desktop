@@ -20,7 +20,6 @@ RUN apt-get update && \
 # Install:
 # TurboVNC (for Desktop)
 # VSCode (for IDE)
-# NLTK Data (for nltk)
 RUN wget 'https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_amd64.deb/download' -O turbovnc_2.2.5_amd64.deb && \
     apt-get install -y -q ./turbovnc_2.2.5_amd64.deb && \
     apt-get remove -y -q light-locker && \
