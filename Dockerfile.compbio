@@ -1,9 +1,6 @@
-FROM jlphillips/csci4850:2021-10-15-lambda
+FROM jlphillips/csci4850:2021-12-23-k8s
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-
-# Build date: triggers cache rebuild
-ENV COMPBIO_BUILD_DATE 2021-10-15
 
 # Install as user
 USER $NB_UID
@@ -42,3 +39,10 @@ RUN R -e "BiocManager::install('phyloseq')"
 RUN fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}" && \
     rm -rf .npm .cache/yarn
+
+# Silly patch for TF 2.7 + Cuda
+#RUN mkdir -p /opt/conda/etc/activate.d && \
+#    mkdir -p /opt/conda/etc/deactivate.d && \
+#    echo -e "#!/bin/bash\nexport LD_LIBRARY_PATH=${CONDA_PREFIX}/lib" > /opt/conda/etc/activate.d/cuda_vars.sh && \
+#    echo -e "#!/bin/bash\nunset LD_LIBRARY_PATH" > /opt/conda/etc/deactivate.d/cuda_vars.sh
+
