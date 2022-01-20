@@ -47,7 +47,7 @@ RUN mamba install --yes \
     gym \
     jupyter-server-proxy \
     nltk \
-    numpy==1.19.5 \
+    numpy \
     plotly \
     pydot \
     pytorch \

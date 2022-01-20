@@ -1,4 +1,4 @@
-FROM jlphillips/csci4850:2021-10-15-gpu
+FROM jlphillips/csci4850:2021-12-23-gpu
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 

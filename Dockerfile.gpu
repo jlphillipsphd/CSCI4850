@@ -1,7 +1,7 @@
 FROM jupyter/datascience-notebook:ubuntu-20.04
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2020-10-15"
+LABEL release-date="2020-12-23"
 
 USER root
 
@@ -74,18 +74,18 @@ RUN mamba install --yes \
     gym \
     jupyter-server-proxy \
     nltk \
-    numpy==1.19.5 \
+    numpy \
     plotly \
     pydot \
     stanfordcorenlp \
+    tensorflow-gpu \
     websockify \
     xvfbwrapper && \        
     mamba clean --all -f -y && \
     mamba install --yes \
     cudatoolkit-dev==11.2.2 && \
     pip install --quiet --no-cache-dir \
-    gensim \
-    tensorflow && \
+    gensim && \
     pip install --quiet --no-cache-dir \
     torch==1.8.2+cu111 \
     torchvision==0.9.2+cu111 \
