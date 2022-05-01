@@ -1,1 +1,1 @@
-Dockerfile.gpu
+Dockerfile.cuda112

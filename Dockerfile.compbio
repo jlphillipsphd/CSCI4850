@@ -1,4 +1,4 @@
-FROM jlphillips/csci4850:2021-12-23-k8s
+FROM temp
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 
@@ -6,11 +6,11 @@ LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 USER $NB_UID
 
 # Qiime2
-RUN wget https://data.qiime2.org/distro/core/qiime2-2021.4-py38-linux-conda.yml && \
-    mamba env create -n qiime2-2021.4 --file qiime2-2021.4-py38-linux-conda.yml  && \
-    rm qiime2-2021.4-py38-linux-conda.yml
-SHELL ["mamba", "run", "-n", "qiime2-2021.4", "/bin/bash", "-o", "pipefail", "-c"]
-RUN python -m ipykernel install --name qiime2-2021.4 --prefix /opt/conda --display-name "Python 3 (Qiime2)"
+RUN wget https://data.qiime2.org/distro/core/qiime2-2022.2-py38-linux-conda.yml && \
+    mamba env create -n qiime2-2022.2 --file qiime2-2022.2-py38-linux-conda.yml  && \
+    rm qiime2-2022.2-py38-linux-conda.yml
+SHELL ["mamba", "run", "-n", "qiime2-2022.2", "/bin/bash", "-o", "pipefail", "-c"]
+RUN python -m ipykernel install --name qiime2-2022.2 --prefix /opt/conda --display-name "Python 3 (Qiime2)"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Dada2
