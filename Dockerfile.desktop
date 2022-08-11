@@ -25,9 +25,9 @@ RUN wget 'https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_a
     apt-get remove -y -q light-locker && \
     rm ./turbovnc_2.2.5_amd64.deb && \
     ln -s /opt/TurboVNC/bin/* /usr/local/bin/ && \
-    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.4.0 && \
+    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.5.1 && \
     rm -rf "${HOME}/.cache" && \
-    wget https://iweb.dl.sourceforge.net/project/circuit/2.7.x/2.7.1/logisim-generic-2.7.1.jar && \
+    wget https://versaweb.dl.sourceforge.net/project/circuit/2.7.x/2.7.1/logisim-generic-2.7.1.jar && \
     mkdir /opt/logisim && \
     mv logisim-generic-2.7.1.jar /opt/logisim/.
 
