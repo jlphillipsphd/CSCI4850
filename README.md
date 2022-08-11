@@ -19,7 +19,7 @@ docker run -it --rm -p 8888:8888 --user root --gpus all -e NVIDIA_VISIBLE_DEVICE
 
 You will also need to make sure your Docker installation is set up to use the Nvidia container toolkit, as described [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html), or just `sudo apt-get install nvidia-container-toolkit` if you happen to be using the Lambda Stack on your host.
 
-However, if you want to build the image yourself, then do the following...
+If you want to build the image yourself (rather than pulling the image from DockerHub - note this is probably not what you want to do), you may do the following...
 
 To prep:
 ```
