@@ -1,7 +1,7 @@
-FROM jupyter/datascience-notebook:ubuntu-22.04
+FROM jupyter/datascience-notebook:2023-02-17
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2022-12-10"
+LABEL release-date="2023-02-25"
 
 USER root
 
@@ -26,6 +26,7 @@ RUN apt-get update && \
     poppler-utils \
     python3-opengl \
     rsync \
+    s3cmd \
     ssh \
     texlive-science \
     time \
@@ -34,6 +35,7 @@ RUN apt-get update && \
     wkhtmltopdf \
     xvfb \
     zip && \
+    apt-get dist-upgrade -y && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -46,6 +48,28 @@ USER $NB_UID
 #    bokeh==2.3.3 \
 #    pip install --quiet --no-cache-dir \
 #    gensim && \
+
+# NOTES 2023-01-16
+# keras-nlp - is not in condaforge at
+#    time of build. Using pip, but two
+#    depends remained: tensorflow-hub
+#    and tensorflow-text. Found TF-hub
+#    in conda, so added that to the
+#    list of conda packages. TF-text
+#    is just included as a dependency
+#    of keras-nlp during the install
+#    process (just remove tf-hub from
+#    conda list once keras-nlp finally
+#    gets added at some point in the
+#    future).
+#    The above approach did not work...
+#    There were incompatible symbols
+#    and no way to resolve without
+#    rebuilding. Drop keras-nlp for
+#    now until it is in conda since
+#    there seems to be no way to make
+#    the conda/pip packages play
+#    nicely together.
 
 # GPU-enabled stack
 RUN CONDA_OVERRIDE_CUDA="11.8" mamba install --yes \
@@ -60,17 +84,19 @@ RUN CONDA_OVERRIDE_CUDA="11.8" mamba install --yes \
     gensim \
     gym \
     jupyter-server-proxy \
+    keras-tuner \
+    keras-cv \
     nltk \
     numpy \
     plotly \
     pydot \
     stanfordcorenlp \
-    tensorflow==2.10.0 \
+    tensorflow==2.11.0 \
     websockify \
     xvfbwrapper && \        
     mamba clean --all -f -y && \
     mamba install --yes \
-    cudatoolkit-dev==11.4.0 && \
+    cudatoolkit-dev==11.6.0 && \
     pip install --quiet --no-cache-dir \
     torch \
     torchvision \

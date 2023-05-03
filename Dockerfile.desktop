@@ -5,10 +5,13 @@ LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 USER root
 
 # Additional tools
+COPY patches/firefox.gpg /etc/apt/trusted.gpg.d/.
+COPY patches/firefox.list /etc/apt/sources.list.d/.
 RUN apt-get update && \
     apt-get install -y \
     default-jre \
     dbus-x11 \
+    firefox-esr \
     xfce4 \
     xfce4-panel \
     xfce4-session \
@@ -25,7 +28,8 @@ RUN wget 'https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_a
     apt-get remove -y -q light-locker && \
     rm ./turbovnc_2.2.5_amd64.deb && \
     ln -s /opt/TurboVNC/bin/* /usr/local/bin/ && \
-    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.9.0 && \
+    echo -e "jovyan\njovyan" | sudo passwd jovyan && \
+    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.10.0 && \
     rm -rf "${HOME}/.cache" && \
     wget https://versaweb.dl.sourceforge.net/project/circuit/2.7.x/2.7.1/logisim-generic-2.7.1.jar && \
     mkdir /opt/logisim && \
