@@ -6,11 +6,11 @@ LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
 USER $NB_UID
 
 # Qiime2
-RUN wget https://data.qiime2.org/distro/core/qiime2-2022.11-py38-linux-conda.yml && \
-    mamba env create -n qiime2-2022.11 --file qiime2-2022.11-py38-linux-conda.yml  && \
-    rm qiime2-2022.11-py38-linux-conda.yml
-SHELL ["mamba", "run", "-n", "qiime2-2022.11", "/bin/bash", "-o", "pipefail", "-c"]
-RUN python -m ipykernel install --name qiime2-2022.11 --prefix /opt/conda --display-name "Python 3 (Qiime2)"
+RUN wget https://data.qiime2.org/distro/core/qiime2-2023.5-py38-linux-conda.yml && \
+    mamba env create -n qiime2-2023.5 --file qiime2-2023.5-py38-linux-conda.yml  && \
+    rm qiime2-2023.5-py38-linux-conda.yml
+SHELL ["mamba", "run", "-n", "qiime2-2023.5", "/bin/bash", "-o", "pipefail", "-c"]
+RUN python -m ipykernel install --name qiime2-2023.5 --prefix /opt/conda --display-name "Python 3 (Qiime2)"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Dada2
@@ -20,29 +20,8 @@ RUN R -e "install.packages('BiocManager',dependencies=TRUE, repos='http://cran.r
 # Other tools... (some should probably be merged above instead)
 RUN R -e "BiocManager::install('phyloseq')"
 
-# Replace PyTorch (CPU with Cuda 11.1)
-# RUN pip uninstall -y \
-#     torch \
-#     torchvision \
-#     torchaudio && \
-#     pip install --quiet --no-cache-dir \
-#     torch==1.8.2+cu111 \
-#     torchvision==0.9.2+cu111 \
-#     torchaudio==0.8.2 \
-#     -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html && \
-#     fix-permissions "${CONDA_DIR}" && \
-#     fix-permissions "/home/${NB_USER}"
-
-
 # Cleanup - not very thorough... needs revision
-# RUN mamba clean --all -f -y && \
 RUN fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}" && \
     rm -rf .npm .cache/yarn
-
-# Silly patch for TF 2.7 + Cuda
-#RUN mkdir -p /opt/conda/etc/activate.d && \
-#    mkdir -p /opt/conda/etc/deactivate.d && \
-#    echo -e "#!/bin/bash\nexport LD_LIBRARY_PATH=${CONDA_PREFIX}/lib" > /opt/conda/etc/activate.d/cuda_vars.sh && \
-#    echo -e "#!/bin/bash\nunset LD_LIBRARY_PATH" > /opt/conda/etc/deactivate.d/cuda_vars.sh
 

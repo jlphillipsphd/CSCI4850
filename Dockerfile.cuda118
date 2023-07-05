@@ -1,7 +1,7 @@
-FROM jupyter/datascience-notebook:2023-02-17
+FROM jupyter/datascience-notebook:2023-06-29
 
 LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
-LABEL release-date="2023-02-25"
+LABEL release-date="2023-06-29"
 
 USER root
 
@@ -76,32 +76,45 @@ RUN CONDA_OVERRIDE_CUDA="11.8" mamba install --yes \
     bash_kernel \
     bokeh \
     cudatoolkit==11.8.0 \
-    cudnn==8.4.1.50 \
+    cudnn==8.8.0.121 \
     dask-gateway \
     dask-jobqueue \
     dask-mpi \
     expect \
     gensim \
-    gym \
     jupyter-server-proxy \
-    keras-tuner \
-    keras-cv \
     nltk \
     numpy \
     plotly \
     pydot \
+    python-graphviz \
     stanfordcorenlp \
-    tensorflow==2.11.0 \
+    wandb \
     websockify \
-    xvfbwrapper && \        
-    mamba clean --all -f -y && \
-    mamba install --yes \
-    cudatoolkit-dev==11.6.0 && \
-    pip install --quiet --no-cache-dir \
+    xvfbwrapper && \
+    mamba clean --all -f -y
+
+RUN pip install --no-cache-dir \
+    gym \
+    keras-tuner \
+    keras-cv \
+    keras-nlp \
+    nvidia-tensorrt \
+    tensorflow \
+    lightning \
     torch \
+    torchinfo \
+    torchview \
+    torchmetrics \
     torchvision \
     torchaudio \
-    --extra-index-url https://download.pytorch.org/whl/cu117 && \
+    --extra-index-url https://download.pytorch.org/whl/cu118
+
+# Note that we cannot clean mamba after
+# this point - or it will remove the dev
+# tools from the stack...
+RUN mamba install --yes \
+    cudatoolkit-dev==11.7.0 && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
@@ -111,17 +124,17 @@ USER root
 
 RUN python -c "import nltk; nltk.download('all','/usr/local/share/nltk_data')"
 
-# Configure extensions (seems unnecessary now)...
-# RUN jupyter labextension install jupyterlab-plotly
-# RUN python -m bash_kernel.install --sys-prefix
-
 # Custom hook to setup home directory
 RUN mkdir /usr/local/bin/before-notebook.d
 COPY config-home.sh /usr/local/bin/before-notebook.d/.
+
+# Set system to use libraries in
+# /opt/conda/lib (nvidia-cuda)
+RUN echo -e "/opt/conda/lib" | tee /etc/ld.so.conf.d/conda.conf
 
 # Switch back to user for final env
 # configuration...
 USER $NB_UID
 
-# Configure user environment (gets copied from /home/jovyan
+# Configure user environment (needed for singularity/apptainer)
 RUN cp /etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile /home/${NB_USER}/. && conda init

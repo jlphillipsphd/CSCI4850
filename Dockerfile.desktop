@@ -29,7 +29,7 @@ RUN wget 'https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_a
     rm ./turbovnc_2.2.5_amd64.deb && \
     ln -s /opt/TurboVNC/bin/* /usr/local/bin/ && \
     echo -e "jovyan\njovyan" | sudo passwd jovyan && \
-    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.10.0 && \
+    curl -fsSL https://code-server.dev/install.sh | sh -s -- --version=4.14.1 && \
     rm -rf "${HOME}/.cache" && \
     wget https://versaweb.dl.sourceforge.net/project/circuit/2.7.x/2.7.1/logisim-generic-2.7.1.jar && \
     mkdir /opt/logisim && \
@@ -41,10 +41,6 @@ RUN ln -s /opt/logisim/logisim /usr/local/bin/. && \
     ln -s /opt/logisim/logisim.desktop /usr/share/applications/. && \
     ln -s /opt/logisim/mimeapps.list /usr/share/applications/.
 
-# Switch back to user for final env
-# configuration...
-USER $NB_UID
-
 # JS-Proxy package(s) configuration:
 # jupyter-desktop-server (for Desktop)
 # jupyter_codeserver_proxy (for IDE)
@@ -54,4 +50,8 @@ RUN pip install --quiet --no-cache-dir *.whl && \
     rm *.whl && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+# Switch back to user for final env
+# configuration...
+USER $NB_UID
 
