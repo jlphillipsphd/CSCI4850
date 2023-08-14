@@ -95,6 +95,7 @@ RUN CONDA_OVERRIDE_CUDA="11.8" mamba install --yes \
     mamba clean --all -f -y
 
 RUN pip install --no-cache-dir \
+    deepspeed \
     gym \
     keras-tuner \
     keras-cv \
