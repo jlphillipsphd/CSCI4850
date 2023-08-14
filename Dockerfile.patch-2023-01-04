@@ -1,0 +1,30 @@
+FROM jlphillips/csci4850:2023-01-04
+
+LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
+
+USER root
+
+# Additional tools
+COPY patches/firefox.gpg /etc/apt/trusted.gpg.d/.
+COPY patches/firefox.list /etc/apt/sources.list.d/.
+RUN apt-get update && \
+    apt-get dist-upgrade -y && \
+    apt-get install -y \
+    bison \
+    firefox-esr \
+    flex \
+    && \
+    echo -e "jovyan\njovyan" | sudo passwd jovyan && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to user for final env
+# configuration...
+USER $NB_UID
+
+RUN mamba install --yes \
+    keras-tuner \
+    tensorflow==2.10.0 \
+    && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"

@@ -1,0 +1,19 @@
+FROM temp
+
+LABEL maintainer="Joshua L. Phillips <https://www.cs.mtsu.edu/~jphillips/>"
+
+USER root
+
+# Additional tools
+RUN apt-get update && \
+    apt-get install -y \
+    nasm \
+    && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to user for final env
+# configuration...
+USER $NB_UID
+
+

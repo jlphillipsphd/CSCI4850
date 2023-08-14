@@ -1,0 +1,37 @@
+FROM temp:latest
+
+USER root
+
+# Tools needed for Singularity
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    build-essential \
+    cryptsetup-bin \
+    libgpgme-dev \
+    libseccomp-dev \
+    pkg-config \
+    git \
+    golang-1.16 \
+    rsync \
+    squashfs-tools \
+    uuid-dev \
+    wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download/Compile/Install Singularity
+ENV PATH="/usr/lib/go-1.16/bin:${PATH}"
+ENV GOCACHE="/root/gocache"
+RUN wget https://github.com/sylabs/singularity/releases/download/v3.9.2/singularity-ce-3.9.2.tar.gz && \
+    tar -xzf singularity-ce-3.9.2.tar.gz && \
+    cd singularity-ce-3.9.2 && \
+    ./mconfig && \
+    make -C ./builddir && \
+    make -C ./builddir install && \
+    cd .. && \
+    rm -rf singularity* && \
+    rm -rf /root/go* && \
+    ln -s /usr/local/etc/bash_completion.d/singularity /etc/bash_completion.d/.
+
+USER $NB_UID
+
